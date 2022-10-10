@@ -1,3 +1,3 @@
 # CovidTracker
 
-deploys react app from 'main' to 'http://https://arcticfoxj.github.io/CovidTracker'
+deploys react app from 'gh-pages' to 'http://https://arcticfoxj.github.io/CovidTracker'
