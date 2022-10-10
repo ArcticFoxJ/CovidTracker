@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "//arcticfoxj.github.io/CovidTracker/static/css/main.4a8947d7.css",
+    "main.js": "//arcticfoxj.github.io/CovidTracker/static/js/main.38faf181.js",
+    "static/js/787.3353a8a3.chunk.js": "//arcticfoxj.github.io/CovidTracker/static/js/787.3353a8a3.chunk.js",
+    "index.html": "//arcticfoxj.github.io/CovidTracker/index.html",
+    "main.4a8947d7.css.map": "//arcticfoxj.github.io/CovidTracker/static/css/main.4a8947d7.css.map",
+    "main.38faf181.js.map": "//arcticfoxj.github.io/CovidTracker/static/js/main.38faf181.js.map",
+    "787.3353a8a3.chunk.js.map": "//arcticfoxj.github.io/CovidTracker/static/js/787.3353a8a3.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4a8947d7.css",
+    "static/js/main.38faf181.js"
+  ]
+}
