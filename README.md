@@ -1,3 +1,5 @@
 # CovidTracker
 
-deploys react app from 'main' to 'http://https://arcticfoxj.github.io/CovidTracker'
+https://arcticfoxj.github.io/CovidTracker
+
+makes use of the free API provided by https://disease.sh/
