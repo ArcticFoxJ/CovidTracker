@@ -1,15 +1,13 @@
 {
   "files": {
-    "main.css": "//arcticfoxj.github.io/CovidTracker/static/css/main.4a8947d7.css",
-    "main.js": "//arcticfoxj.github.io/CovidTracker/static/js/main.38faf181.js",
-    "static/js/787.3353a8a3.chunk.js": "//arcticfoxj.github.io/CovidTracker/static/js/787.3353a8a3.chunk.js",
-    "index.html": "//arcticfoxj.github.io/CovidTracker/index.html",
-    "main.4a8947d7.css.map": "//arcticfoxj.github.io/CovidTracker/static/css/main.4a8947d7.css.map",
-    "main.38faf181.js.map": "//arcticfoxj.github.io/CovidTracker/static/js/main.38faf181.js.map",
-    "787.3353a8a3.chunk.js.map": "//arcticfoxj.github.io/CovidTracker/static/js/787.3353a8a3.chunk.js.map"
+    "main.css": "/CovidTracker/static/css/main.4a8947d7.css",
+    "main.js": "/CovidTracker/static/js/main.fa3657d8.js",
+    "index.html": "/CovidTracker/index.html",
+    "main.4a8947d7.css.map": "/CovidTracker/static/css/main.4a8947d7.css.map",
+    "main.fa3657d8.js.map": "/CovidTracker/static/js/main.fa3657d8.js.map"
   },
   "entrypoints": [
     "static/css/main.4a8947d7.css",
-    "static/js/main.38faf181.js"
+    "static/js/main.fa3657d8.js"
   ]
 }
