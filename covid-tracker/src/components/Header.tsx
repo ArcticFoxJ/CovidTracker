@@ -2,6 +2,7 @@ import { AppBar, Toolbar, Typography } from '@mui/material'
 
 interface HeaderProps {
     title: string
+    description?: string
 }
 
 const Header = (props: HeaderProps) => {
@@ -18,6 +19,9 @@ const Header = (props: HeaderProps) => {
         <Toolbar>
           <Typography variant="h3" color="inherit" noWrap>
             {props.title}
+          </Typography>
+          <Typography variant="subtitle1" color="inherit" sx={{pl: 3}} noWrap>
+            {props.description}
           </Typography>
         </Toolbar>
       </AppBar>
