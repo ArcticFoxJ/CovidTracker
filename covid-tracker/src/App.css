@@ -14,3 +14,10 @@ footer a {
 footer a:hover {
   color: #FFFFFF;
 }
+
+.js-plotly-plot,
+.plotly.plot-container,
+.svg-container,
+.main-svg {
+  width: 100% !important;
+}

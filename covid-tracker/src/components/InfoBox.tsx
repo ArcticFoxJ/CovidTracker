@@ -10,13 +10,13 @@ const InfoBox = (props: InfoBoxProps) => {
   return (
     <Card sx={{ mt: 3 }}>
       <CardContent>
-        <Typography color="text.secondary">
+        <Typography color="text.secondary" align="center">
           {props.title}
         </Typography>
-        <Typography variant="h4" color="primary">
+        <Typography variant="h4" color="primary" align="center">
           {props.count}
         </Typography>
-        <Typography color="text.secondary">
+        <Typography color="text.secondary" align="center">
             {props.total} Total
         </Typography>
       </CardContent>

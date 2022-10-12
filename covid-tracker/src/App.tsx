@@ -1,10 +1,11 @@
-import { Card, CardContent, CardHeader, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import Container from '@mui/material/Container';
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header';
 import InfoBox from './components/InfoBox';
-import { AllData, CountryData, getAll, getCountries, getCountry } from './services/api';
+import { AllData, CountryData, CountryHistoricalData, getAll, getAllHistorical, getCountries, getCountry, getCountryHistorical, HistoricalDates } from './services/api';
+import Plot from 'react-plotly.js';
 
 interface ListItem {
   name: string
@@ -16,6 +17,7 @@ function App() {
   const [countries, setCountries] = useState<ListItem[]>([])
   const [country, setCountry] = useState<string>('')
   const [data, setData] = useState<AllData | CountryData>()
+  const [historicalData, setHistoricalData] = useState<HistoricalDates>()
 
   useEffect(() => {
     getCountries(data => {
@@ -28,20 +30,23 @@ function App() {
   }, [])
 
   useEffect(() => {
+    setData(undefined)
+    setHistoricalData(undefined)
     if(country) {
       getCountry(country, data => setData(data))
+      getCountryHistorical(country, data => setHistoricalData(data.timeline))
     }
     else {
       getAll(data => setData(data))
+      getAllHistorical(data => setHistoricalData(data))
     }
-    console.log(data)
+    console.log(historicalData)
   }, [country])
   
   return (
     <React.Fragment>
       <Header title="Covid Tracker" description="daily statistics on the covid-19 virus"/>
-      <Container component="main" maxWidth="sm" sx={{ mt: 2 }} >
-        
+      <Container maxWidth="sm">
           <FormControl fullWidth sx={{ mt: 2, mb: 2 }}>
             <InputLabel required={true} id="country-label">Country</InputLabel>
             <Select labelId="country-label" id="country" value={country} label="Choose..." onChange={(e) => { setCountry(e.target.value) }} >
@@ -53,15 +58,16 @@ function App() {
               }
             </Select>
           </FormControl>
-
+      </Container>
+      <Container component="main" maxWidth="lg" sx={{ mt: 2 }} >
           {
             data &&
             <div>
-              <Typography variant="h4" color="primary">
+              <Typography align="center" variant="h3" color="primary">
                 {(data as CountryData)?.country || 'Worldwide'}
               </Typography>
     
-              <Grid container spacing={2}>
+              <Grid container spacing={2} sx={{ mb: 3 }}>
                 <Grid item xs={6} md={4}>
                   <InfoBox title="Cases" count={data.todayCases} total={data.cases}/>
                 </Grid>
@@ -72,8 +78,50 @@ function App() {
                   <InfoBox title="Deaths" count={data.todayDeaths} total={data.deaths}/>
                 </Grid>
               </Grid>
-    
             </div>
+          }
+
+          {
+            historicalData ?
+            <div>
+              <div style={{width: "50%", display: "inline-block"}}>
+              <Plot 
+                data={[
+                  {
+                    x: Object.keys(historicalData.cases).map(date => {
+                      const [month, day, year] = date.split('/')
+                      return new Date(+year+2000, +month - 1, +day)
+                    }) as Date[],
+                    y: Object.values(historicalData.cases) as number[],
+                    type: 'scatter'
+                  }
+                ]}
+                layout={{
+                  title: 'Historical Cases'
+                }}
+              />
+              </div>
+              <div style={{width: "50%", display: "inline-block"}}>
+              <Plot 
+                data={[
+                  {
+                      x: Object.keys(historicalData.deaths).map(date => {
+                        const [month, day, year] = date.split('/')
+                        return new Date(+year+2000, +month - 1, +day)
+                      }) as Date[],
+                      y: Object.values(historicalData.deaths) as number[],
+                      type: 'scatter'
+                  }
+                ]}
+                layout={{
+                  title: 'Historical Deaths'
+                }}
+              />
+              </div>
+            </div>:
+            <Box sx={{display: 'flex', justifyContent: 'center'}}>
+              <CircularProgress color="primary" />
+            </Box>
           }
 
       </Container>
