@@ -3,7 +3,7 @@ import Container from '@mui/material/Container';
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header';
-import { AllData, CountryData, getAll, getAllHistorical, getCountries, getCountry, getCountryHistorical, HistoricalDates } from './services/api';
+import { AllData, CountryData, CountryHistoricalData, getAll, getAllHistorical, getCountries, getCountry, getCountryHistorical, HistoricalDates } from './services/api';
 import DataSummary from './components/DataSummary';
 import Footer from './components/Footer';
 import Graph from './components/Graph';
@@ -19,7 +19,8 @@ function App() {
   const [country, setCountry] = useState<string>('')
   const [data, setData] = useState<AllData | CountryData>()
   const [historicalData, setHistoricalData] = useState<HistoricalDates>()
-
+  const [historicalDataMessage, setHistoricalDataMessage] = useState<string>()
+  
   useEffect(() => {
     getCountries(data => {
       setCountries(data.map(country => ({
@@ -33,15 +34,28 @@ function App() {
   useEffect(() => {
     setData(undefined)
     setHistoricalData(undefined)
+    setHistoricalDataMessage(undefined)
+
     if(country) {
       getCountry(country, data => setData(data))
-      getCountryHistorical(country, data => setHistoricalData(data.timeline))
+      try {
+        getCountryHistorical(country, data => {
+          if((data as Error)?.message){
+            setHistoricalDataMessage((data as Error).message)
+          }
+          else {
+            setHistoricalData((data as CountryHistoricalData).timeline)
+          }
+        })
+      }
+      catch {
+        setHistoricalDataMessage('error')
+      }
     }
     else {
       getAll(data => setData(data))
       getAllHistorical(data => setHistoricalData(data))
     }
-    console.log(historicalData)
   }, [country])
   
   const getDatesFromData = (data: object): Date[] => {
@@ -101,10 +115,14 @@ function App() {
                 counts={getCountsFromData(historicalData.deaths)} 
               />
               </div>
-            </div>:
-            <Box sx={{display: 'flex', justifyContent: 'center'}}>
-              <CircularProgress color="primary" />
-            </Box>
+            </div> :
+            historicalDataMessage ? 
+              <Typography align='center'>
+                {historicalDataMessage}
+              </Typography> :
+              <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                <CircularProgress color="primary" />
+              </Box>
           }
 
       </Container>

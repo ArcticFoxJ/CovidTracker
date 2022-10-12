@@ -68,7 +68,7 @@ export const getAllHistorical = async (callback: (data: HistoricalDates) => any,
     await fetchData('historical/all' + '?lastdays=' + lastdays, callback)
 }
 
-export const getCountryHistorical = async (country: string, callback: (data: CountryHistoricalData) => any, lastdays: number = 360) => {
+export const getCountryHistorical = async (country: string, callback: (data: CountryHistoricalData | Error) => any, lastdays: number = 360) => {
     await fetchData('historical/' + country + '?lastdays=' + lastdays, callback)
 }
 
