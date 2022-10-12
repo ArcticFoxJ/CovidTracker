@@ -5,7 +5,7 @@ interface HeaderProps {
     description?: string
 }
 
-const Header = (props: HeaderProps) => {
+const Header = ({title, description}: HeaderProps) => {
   return (
       <AppBar
         position="absolute"
@@ -18,10 +18,10 @@ const Header = (props: HeaderProps) => {
       >
         <Toolbar>
           <Typography variant="h3" color="inherit" noWrap>
-            {props.title}
+            {title}
           </Typography>
           <Typography variant="subtitle1" color="inherit" sx={{pl: 3}} noWrap>
-            {props.description}
+            {description}
           </Typography>
         </Toolbar>
       </AppBar>

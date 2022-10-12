@@ -1,11 +1,12 @@
-import { Box, Card, CardContent, CardHeader, CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { Box, CircularProgress, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import Container from '@mui/material/Container';
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header';
-import InfoBox from './components/InfoBox';
-import { AllData, CountryData, CountryHistoricalData, getAll, getAllHistorical, getCountries, getCountry, getCountryHistorical, HistoricalDates } from './services/api';
-import Plot from 'react-plotly.js';
+import { AllData, CountryData, getAll, getAllHistorical, getCountries, getCountry, getCountryHistorical, HistoricalDates } from './services/api';
+import DataSummary from './components/DataSummary';
+import Footer from './components/Footer';
+import Graph from './components/Graph';
 
 interface ListItem {
   name: string
@@ -43,6 +44,17 @@ function App() {
     console.log(historicalData)
   }, [country])
   
+  const getDatesFromData = (data: object): Date[] => {
+    return Object.keys(data).map(date => {
+      const [month, day, year] = date.split('/')
+      return new Date(+year+2000, +month - 1, +day)
+    })
+  }
+  
+  const getCountsFromData = (data: object): number[] => {
+    return Object.values(data)
+  }
+
   return (
     <React.Fragment>
       <Header title="Covid Tracker" description="daily statistics on the covid-19 virus"/>
@@ -62,60 +74,31 @@ function App() {
       <Container component="main" maxWidth="lg" sx={{ mt: 2 }} >
           {
             data &&
-            <div>
-              <Typography align="center" variant="h3" color="primary">
-                {(data as CountryData)?.country || 'Worldwide'}
-              </Typography>
-    
-              <Grid container spacing={2} sx={{ mb: 3 }}>
-                <Grid item xs={6} md={4}>
-                  <InfoBox title="Cases" count={data.todayCases} total={data.cases}/>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <InfoBox title="Recovered" count={data.todayRecovered} total={data.recovered}/>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <InfoBox title="Deaths" count={data.todayDeaths} total={data.deaths}/>
-                </Grid>
-              </Grid>
-            </div>
+            <Typography align="center" variant="h3" color="primary">
+              {(data as CountryData)?.country || 'Worldwide'}
+            </Typography>
+          }
+
+          {
+            data &&
+            <DataSummary data={data} />
           }
 
           {
             historicalData ?
             <div>
               <div style={{width: "50%", display: "inline-block"}}>
-              <Plot 
-                data={[
-                  {
-                    x: Object.keys(historicalData.cases).map(date => {
-                      const [month, day, year] = date.split('/')
-                      return new Date(+year+2000, +month - 1, +day)
-                    }) as Date[],
-                    y: Object.values(historicalData.cases) as number[],
-                    type: 'scatter'
-                  }
-                ]}
-                layout={{
-                  title: 'Historical Cases'
-                }}
+              <Graph 
+                title='Historical Cases' 
+                dates={getDatesFromData(historicalData.cases)} 
+                counts={getCountsFromData(historicalData.cases)} 
               />
               </div>
               <div style={{width: "50%", display: "inline-block"}}>
-              <Plot 
-                data={[
-                  {
-                      x: Object.keys(historicalData.deaths).map(date => {
-                        const [month, day, year] = date.split('/')
-                        return new Date(+year+2000, +month - 1, +day)
-                      }) as Date[],
-                      y: Object.values(historicalData.deaths) as number[],
-                      type: 'scatter'
-                  }
-                ]}
-                layout={{
-                  title: 'Historical Deaths'
-                }}
+              <Graph 
+                title='Historical Deaths' 
+                dates={getDatesFromData(historicalData.deaths)} 
+                counts={getCountsFromData(historicalData.deaths)} 
               />
               </div>
             </div>:
@@ -125,7 +108,7 @@ function App() {
           }
 
       </Container>
-      <footer className="text-center"><a href="https://github.com/ArcticFoxJ" target="_blank" rel="noreferrer">@ArcticFoxJ</a> 2022</footer>
+      <Footer />
     </React.Fragment>
   );
 }

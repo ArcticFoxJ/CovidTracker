@@ -1,6 +1,6 @@
 const BASE_URL = 'https://disease.sh/v3/covid-19/'
 
-interface Data {
+export interface Data {
     updated: number
     cases: number
     todayCases: number
